@@ -1,0 +1,42 @@
+function sysCall_init()
+    leftJoint = sim.getObject('/DynamicLeftJoint')
+    rightJoint = sim.getObject('/DynamicRightJoint')
+    leftSensor= sim.getObject('/LeftSensor')
+    rightSensor= sim.getObject('/RightSensor')
+
+end
+
+function sysCall_actuation()
+  
+    v = 5
+    dv = 8
+    sim.setJointTargetVelocity(leftJoint,v)
+    sim.setJointTargetVelocity(rightJoint,v)
+    if (data_left~= nil) then
+    intensity_left = data_left[11]
+    intensity_right = data_right[11]
+    
+    if (intensity_right> 0.5 and intensity_left < 0.5) then
+        print('dreapta')
+        sim.setJointTargetVelocity(rightJoint,v+dv)
+    end
+    if (intensity_left> 0.5 and intensity_right< 0.5) then
+        print('stanga')
+        sim.setJointTargetVelocity(leftJoint,v+dv)
+    end
+    end
+    
+    
+end
+
+function sysCall_sensing()
+    
+    result,data_left=sim.readVisionSensor(leftSensor)
+    result,data_right=sim.readVisionSensor(rightSensor)
+
+end
+
+function sysCall_cleanup()
+    
+end
+
